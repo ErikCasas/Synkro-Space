@@ -18,58 +18,70 @@ model User {
   id                 String               @id @default(uuid())
   name               String               @db.VarChar(20)
   role               Role                 @relation(fields: [roleId], references: [id])
-  roleId             Int
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
+  roleId             Int                  @map("role_id")
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
   SessionParticipant SessionParticipant[]
   Session            Session[]
+
+  @@map("users")
 }
 
 model Role {
   id    Int    @id @unique
   name  String @unique
   Users User[]
+
+  @@map("roles")
 }
 
 model MeetingRoom {
   id              Int       @id @default(autoincrement())
-  seatingQuantity Int
+  seatingQuantity Int       @map("seating_quantity")
   direction       String    @unique
-  roomCode        String    @unique
+  roomCode        String    @unique @map("room_code")
   seatings        Seating[]
   Session         Session[]
+
+  @@map("meeting_rooms")
 }
 
 model Seating {
   id                 Int                  @id @default(autoincrement())
   MeetingRoom        MeetingRoom          @relation(fields: [meetingRoomId], references: [id])
-  meetingRoomId      Int
+  meetingRoomId      Int                  @map("meeting_room_id")
   SessionParticipant SessionParticipant[]
+
+  @@map("seatings")
 }
 
 model Session {
   id                 String               @id @default(ulid())
   title              String               @db.VarChar(50)
   token              String               @unique @default(uuid())
-  startAt            DateTime             @default(now())
-  endAt              DateTime
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
+  startAt            DateTime             @default(now()) @map("start_at")
+  endAt              DateTime             @map("end_at")
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
   meetingRoom        MeetingRoom          @relation(fields: [meetingRoomId], references: [id])
-  meetingRoomId      Int
+  meetingRoomId      Int                  @map("meeting_room_id")
   user               User                 @relation(onDelete: Restrict, fields: [createdBy], references: [id])
-  createdBy          String
+  createdBy          String               @map("created_by")
   SessionParticipant SessionParticipant[]
+
+  @@map("sessions")
 }
 
 model SessionParticipant {
   id          String  @id @default(ulid())
   session     Session @relation(fields: [sesssionId], references: [id])
-  sesssionId  String
+  sesssionId  String  @map("session_id")
   seating     Seating @relation(fields: [seatingId], references: [id])
-  seatingId   Int
+  seatingId   Int     @map("seating_id")
   token       String  @unique @default(uuid())
   user        User    @relation(fields: [userId], references: [id])
-  userId      String
-  haveConfirm Boolean @default(false)
+  userId      String  @map("user_id")
+  haveConfirm Boolean @default(false) @map("have_confirm")
+
+  @@map("session_participants")
 }
