@@ -5,3 +5,5 @@ temp/
 config.js
 .env
 /generated/prisma
+
+/generated/prisma

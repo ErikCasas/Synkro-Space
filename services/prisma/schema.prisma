@@ -13,3 +13,63 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                 String               @id @default(uuid())
+  name               String               @db.VarChar(20)
+  role               Role                 @relation(fields: [roleId], references: [id])
+  roleId             Int
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  SessionParticipant SessionParticipant[]
+  Session            Session[]
+}
+
+model Role {
+  id    Int    @id @unique
+  name  String @unique
+  Users User[]
+}
+
+model MeetingRoom {
+  id              Int       @id @default(autoincrement())
+  seatingQuantity Int
+  direction       String    @unique
+  roomCode        String    @unique
+  seatings        Seating[]
+  Session         Session[]
+}
+
+model Seating {
+  id                 Int                  @id @default(autoincrement())
+  MeetingRoom        MeetingRoom          @relation(fields: [meetingRoomId], references: [id])
+  meetingRoomId      Int
+  SessionParticipant SessionParticipant[]
+}
+
+model Session {
+  id                 String               @id @default(ulid())
+  title              String               @db.VarChar(50)
+  token              String               @unique @default(uuid())
+  startAt            DateTime             @default(now())
+  endAt              DateTime
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  meetingRoom        MeetingRoom          @relation(fields: [meetingRoomId], references: [id])
+  meetingRoomId      Int
+  user               User                 @relation(onDelete: Restrict, fields: [createdBy], references: [id])
+  createdBy          String
+  SessionParticipant SessionParticipant[]
+}
+
+model SessionParticipant {
+  id          String  @id @default(ulid())
+  session     Session @relation(fields: [sesssionId], references: [id])
+  sesssionId  String
+  seating     Seating @relation(fields: [seatingId], references: [id])
+  seatingId   Int
+  token       String  @unique @default(uuid())
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String
+  haveConfirm Boolean @default(false)
+}
