@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import Paths from '@src/common/constants/Paths';
-import UserRoutes from './UserRoutes';
 
 
 /******************************************************************************
@@ -16,14 +15,6 @@ const apiRouter = Router();
 // Init router
 const userRouter = Router();
 
-// Get all users
-userRouter.get(Paths.Users.Get, UserRoutes.getAll);
-userRouter.post(Paths.Users.Add, UserRoutes.add);
-userRouter.put(Paths.Users.Update, UserRoutes.update);
-userRouter.delete(Paths.Users.Delete, UserRoutes.delete);
-
-// Add UserRouter
-apiRouter.use(Paths.Users.Base, userRouter);
 
 
 /******************************************************************************
