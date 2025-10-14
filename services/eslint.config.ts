@@ -84,7 +84,7 @@ export default tseslint.config(
       'comma-dangle': ['warn', 'always-multiline'],
       'no-console': 1,
       'no-extra-boolean-cast': 0,
-      'indent': ['warn', 2],
+      'indent': ['off', 2],
       'quotes': ['warn', 'single'],
       'n/no-process-env': 1,
       'n/no-missing-import': 0,
