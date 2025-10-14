@@ -9,7 +9,7 @@ export default tseslint.config(
   nodePlugin.configs['flat/recommended-script'],
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  { 
+  {
     ignores: [
       '**/node_modules/*',
       '**/*.mjs',
