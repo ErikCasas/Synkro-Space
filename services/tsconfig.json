@@ -10,7 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@src/*": ["src/*"],
-      "@models/*": ["src/models*"]
+      "@models/*": ["src/models/*"]
     },
     "useUnknownInCatchVariables": false,
     "types": ["vitest/globals"]
