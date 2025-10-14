@@ -37,23 +37,13 @@ model Role {
 }
 
 model MeetingRoom {
-  id              Int       @id @default(autoincrement())
-  seatingQuantity Int       @map("seating_quantity")
-  direction       String    @unique
-  roomCode        String    @unique @map("room_code")
-  seatings        Seating[]
-  Session         Session[]
+  id        Int       @id @default(autoincrement())
+  capacity  Int
+  direction String    @unique
+  roomCode  String    @unique @map("room_code")
+  Session   Session[]
 
   @@map("meeting_rooms")
-}
-
-model Seating {
-  id                 Int                  @id @default(autoincrement())
-  MeetingRoom        MeetingRoom          @relation(fields: [meetingRoomId], references: [id])
-  meetingRoomId      Int                  @map("meeting_room_id")
-  SessionParticipant SessionParticipant[]
-
-  @@map("seatings")
 }
 
 model Session {
@@ -63,8 +53,14 @@ model Session {
   endAt              DateTime             @map("end_at")
   createdAt          DateTime             @default(now()) @map("created_at")
   updatedAt          DateTime             @updatedAt @map("updated_at")
-  meetingRoom        MeetingRoom          @relation(fields: [meetingRoomId], references: [id])
-  meetingRoomId      Int                  @map("meeting_room_id")
+  token              String               @unique @default(uuid())
+  // ------
+  meetingRoom        MeetingRoom?         @relation(fields: [meetingRoomId], references: [id])
+  meetingRoomId      Int?                 @map("meeting_room_id")
+  // ------
+  workStation        workStation?         @relation(fields: [workStationId], references: [id])
+  workStationId      String?              @map("work_station_id")
+  // ------
   user               User                 @relation(onDelete: Restrict, fields: [createdBy], references: [id])
   createdBy          String               @map("created_by")
   SessionParticipant SessionParticipant[]
@@ -76,9 +72,6 @@ model SessionParticipant {
   id          String  @id @default(ulid())
   session     Session @relation(fields: [sesssionId], references: [id])
   sesssionId  String  @map("session_id")
-  seating     Seating @relation(fields: [seatingId], references: [id])
-  seatingId   Int     @map("seating_id")
-  token       String  @unique @default(uuid())
   user        User    @relation(fields: [userId], references: [id])
   userId      String  @map("user_id")
   haveConfirm Boolean @default(false) @map("have_confirm")
@@ -96,4 +89,12 @@ model Credential {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   @@map("credentials")
+}
+
+model workStation {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Session Session[]
+
+  @@map("work_station")
 }
