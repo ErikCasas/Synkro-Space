@@ -1,5 +1,5 @@
 import { UserRepository } from '@src/repositories/user.repository';
-import { UserService } from '@src/services/UserService';
+import { UserService } from '@src/services/user.service';
 
 export class AppContainer {
     private static _userRepository: UserRepository;
