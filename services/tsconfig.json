@@ -11,7 +11,8 @@
     "paths": {
       "@src/*": ["src/*"],
       "@models/*": ["src/models/*"],
-      "@repositories/*": ["src/repositories/interfaces/*"]
+      "@repositories/*": ["src/repositories/interfaces/*"],
+      "@common/*": ["src/common/*"]
     },
     "useUnknownInCatchVariables": false,
     "types": ["vitest/globals"]
