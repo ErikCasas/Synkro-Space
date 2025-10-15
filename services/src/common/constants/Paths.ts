@@ -1,4 +1,7 @@
 
 export default {
-  Base: '/api',
+  Base: '/api/v1',
+  Users: {
+    Base: '/users',
+  },
 } as const;

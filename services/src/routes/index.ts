@@ -1,24 +1,9 @@
 import { Router } from 'express';
-
 import Paths from '@src/common/constants/Paths';
-
-
-/******************************************************************************
-                                Setup
-******************************************************************************/
+import userRouter from './user.router';
 
 const apiRouter = Router();
 
-
-// ** Add UserRouter ** //
-
-// Init router
-const userRouter = Router();
-
-
-
-/******************************************************************************
-                                Export default
-******************************************************************************/
+apiRouter.use(Paths.Users.Base, userRouter);
 
 export default apiRouter;
