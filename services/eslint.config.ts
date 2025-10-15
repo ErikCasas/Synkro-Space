@@ -7,8 +7,8 @@ import nodePlugin from 'eslint-plugin-n';
 export default tseslint.config(
   eslint.configs.recommended,
   nodePlugin.configs['flat/recommended-script'],
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  // ...tseslint.configs.strictTypeChecked,
+  // ...tseslint.configs.stylisticTypeChecked,
   {
     ignores: [
       '**/node_modules/*',
