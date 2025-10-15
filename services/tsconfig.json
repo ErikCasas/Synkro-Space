@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@src/*": ["src/*"],
-      "@models/*": ["src/models/*"]
+      "@models/*": ["src/models/*"],
+      "@repositories/*": ["src/repositories/interfaces/*"]
     },
     "useUnknownInCatchVariables": false,
     "types": ["vitest/globals"]
@@ -26,6 +27,6 @@
     "scripts",
     "eslint.config.ts",
     "vitest.config.mts"
-  ],
+, "src/services/interfaces/IUserService"  ],
   "exclude": ["src/public/*"]
 }
