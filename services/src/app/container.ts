@@ -1,21 +1,9 @@
+import { SessionRepository } from '@src/repositories/session.respository';
 import { UserRepository } from '@src/repositories/user.repository';
+import { SessionService } from '@src/services/session.service';
 import { UserService } from '@src/services/user.service';
 
 export class AppContainer {
-    private static _userRepository: UserRepository;
-    private static _userService: UserService;
-
-    static get userRepository(): UserRepository {
-        if (!this._userRepository) {
-            this._userRepository = new UserRepository();
-        }
-        return this._userRepository;
-    }
-
-    static get userService(): UserService {
-        if (!this._userService) {
-            this._userService = new UserService(this.userRepository);
-        }
-        return this._userService;
-    }
+    public static userService: UserService = new UserService(new UserRepository())
+    public static sessionService: SessionService = new SessionService(new SessionRepository())
 }
