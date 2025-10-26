@@ -4,7 +4,7 @@ import { prisma } from '@src/lib/prisma';
 
 export class AuthRepository implements IAuthRepository {
 
-    findUserByEmail(email: string): Promise<(User & { Credential: { passwordHash: string; }[]; }) | null> {
+    findUserByEmail(email: string): Promise<(User & { Credential: { passwordHash: string; }[], role: { name: string }; }) | null> {
         return prisma.user.findUnique({
             where: { email },
             include: { Credential: true, role: true },

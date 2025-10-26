@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
 
 export interface IAuthRepository {
-    findUserByEmail(email: string): Promise<(User & { Credential: { passwordHash: string }[] }) | null>
+    findUserByEmail(email: string): Promise<(User & { Credential: { passwordHash: string; }[], role: { name: string }; }) | null>
 }
