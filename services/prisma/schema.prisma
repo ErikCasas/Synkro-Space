@@ -42,6 +42,7 @@ model MeetingRoom {
   direction String    @unique
   roomCode  String    @unique @map("room_code")
   Session   Session[]
+  Entity    Entity[]
 
   @@map("meeting_rooms")
 }
@@ -53,23 +54,23 @@ model Session {
   endAt              DateTime             @map("end_at")
   createdAt          DateTime             @default(now()) @map("created_at")
   updatedAt          DateTime             @updatedAt @map("updated_at")
-  token              String               @unique @default(uuid())
   // ------
-  meetingRoom        MeetingRoom?         @relation(fields: [meetingRoomId], references: [id])
-  meetingRoomId      Int?                 @map("meeting_room_id")
-  // ------
-  workStation        workStation?         @relation(fields: [workStationId], references: [id])
-  workStationId      String?              @map("work_station_id")
+  entity             Entity               @relation(fields: [entityId], references: [id])
+  entityId           String               @map("entity_id")
   // ------
   user               User                 @relation(onDelete: Restrict, fields: [createdBy], references: [id])
   createdBy          String               @map("created_by")
   SessionParticipant SessionParticipant[]
+  MeetingRoom        MeetingRoom?         @relation(fields: [meetingRoomId], references: [id])
+  meetingRoomId      Int?
+  WorkStation        WorkStation?         @relation(fields: [workStationId], references: [id])
+  workStationId      String?
 
   @@map("sessions")
 }
 
 model SessionParticipant {
-  id          String  @id @default(ulid())
+  id          String  @id @default(uuid())
   session     Session @relation(fields: [sesssionId], references: [id])
   sesssionId  String  @map("session_id")
   user        User    @relation(fields: [userId], references: [id])
@@ -91,10 +92,34 @@ model Credential {
   @@map("credentials")
 }
 
-model workStation {
+model WorkStation {
   id      String    @id @default(uuid())
   name    String    @unique
   Session Session[]
+  Entity  Entity[]
 
   @@map("work_station")
+}
+
+model Entity {
+  id           String     @id @default(uuid())
+  name         String     @db.VarChar(50)
+  entityType   EntityType @relation(fields: [entityTypeId], references: [id])
+  entityTypeId String     @map("entity_type_id")
+
+  MeetingRoom   MeetingRoom? @relation(fields: [meetingRoomId], references: [id])
+  WorkStation   WorkStation? @relation(fields: [workStationId], references: [id])
+  Session       Session[]
+  meetingRoomId Int?
+  workStationId String?
+
+  @@map("entities")
+}
+
+model EntityType {
+  id     String   @id @default(uuid())
+  type   String   @unique
+  Entity Entity[]
+
+  @@map("entity_types")
 }
