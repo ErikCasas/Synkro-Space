@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.17.1",
+    "bcrypt": "6.0.0",
     "cookie-parser": "1.4.7",
     "dayjs": "1.11.18",
     "dotenv": "17.2.3",
@@ -36,6 +37,7 @@
     "@stylistic/eslint-plugin-js": "4.4.1",
     "@stylistic/eslint-plugin-ts": "4.4.1",
     "@swc/core": "1.13.5",
+    "@types/bcrypt": "6.0.0",
     "@types/cookie-parser": "1.4.9",
     "@types/find": "0.2.4",
     "@types/fs-extra": "11.0.4",
