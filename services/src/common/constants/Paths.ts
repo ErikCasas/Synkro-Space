@@ -4,4 +4,8 @@ export default {
   Users: {
     Base: '/users',
   },
+  Session: {
+    Base: '/sessions',
+    Me: '/me',
+  },
 } as const;
