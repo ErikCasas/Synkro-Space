@@ -1,4 +1,4 @@
-import { Prisma, Session } from '@prisma/client';
+import { Session } from '@prisma/client';
 import { User } from '@models/common/user.model'
 import { CreateSessionDto } from '@dtos';
 
