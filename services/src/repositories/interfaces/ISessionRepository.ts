@@ -1,7 +1,10 @@
 import { Prisma, Session } from '@prisma/client';
 import { User } from '@models/common/user.model'
+import { CreateSessionDto } from '@dtos';
+
 export interface ISessionRepository {
-    create(session: Prisma.SessionCreateInput, userOwnerId: User['id'], participantIds: Array<User['id']>): Promise<Session>
+    createFromDto(sessionDto: CreateSessionDto): Promise<Session>
     findById(sessionId: Session['id']): Promise<Session | null>
+    findAllUserSessions(userId: User['id']): Promise<Session[]>
     delete(sessionId: Session['id']): Promise<void>
 }
