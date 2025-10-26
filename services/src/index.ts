@@ -1,7 +1,7 @@
 import logger from 'jet-logger';
 import ENV from '@src/common/constants/ENV';
 import server from './server';
-import { seedRoles } from '@common/seed';
+import { seedRoles, seedUsers } from '@common/seed';
 
 
 const SERVER_START_MSG = (
@@ -11,6 +11,7 @@ const SERVER_START_MSG = (
 (async function bootstrap() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   await seedRoles();
+  await seedUsers();
   server.listen(ENV.Port, err => {
     if (!!err) {
       logger.err(err.message);
