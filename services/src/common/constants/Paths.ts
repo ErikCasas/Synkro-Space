@@ -8,4 +8,8 @@ export default {
     Base: '/sessions',
     Me: '/me',
   },
+  Auth: {
+    Base: '/auth',
+    Me: '/login',
+  },
 } as const;

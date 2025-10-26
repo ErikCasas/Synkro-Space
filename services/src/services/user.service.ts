@@ -1,9 +1,9 @@
 import { User } from '@models/common/user.model';
 import { IUserRepository } from '@src/repositories/interfaces/IUserRepository';
-import { IUserSevice } from './interfaces/IUserService';
+import { IUserService } from './interfaces/IUserService';
 
 
-export class UserService implements IUserSevice {
+export class UserService implements IUserService {
     public constructor(private readonly userRepo: IUserRepository) { }
 
     public getAllUsers(): Promise<User[]> {
