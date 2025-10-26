@@ -1,12 +1,13 @@
 import { Role } from '@prisma/client';
 import { prisma } from '@src/lib/prisma';
 import logger from 'jet-logger';
+import { Roles } from '../constants/roles';
 
 export async function seedRoles(): Promise<void> {
     try {
         const roles: Role[] = [
-            { id: 1, name: 'Admin' },
-            { id: 2, name: 'User' },
+            { id: Roles.Admin, name: 'Admin' },
+            { id: Roles.User, name: 'User' },
         ];
 
         for (const role of roles) {
