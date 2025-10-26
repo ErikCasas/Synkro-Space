@@ -12,7 +12,8 @@
       "@src/*": ["src/*"],
       "@models/*": ["src/models/*"],
       "@repositories/*": ["src/repositories/interfaces/*"],
-      "@common/*": ["src/common/*"]
+      "@common/*": ["src/common/*"],
+      "@dtos": ["src/models/DTOs"]
     },
     "useUnknownInCatchVariables": false,
     "types": ["vitest/globals"]
