@@ -1,21 +1,41 @@
-import { MeetingRoom, Session, workStation, User } from '@prisma/client';
+import { Session, User } from '@prisma/client';
 import { ISessionService } from './interfaces/ISessionService';
+import { ISessionRepository } from '@src/repositories/interfaces/ISessionRepository';
+import { RouteError } from '@src/common/util/route-errors';
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import { CreateSessionDto } from '@dtos';
 
 export class SessionService implements ISessionService {
+    public constructor(private readonly sessionRepo: ISessionRepository) { }
 
-    scheduleRoom(roomId: MeetingRoom['id'], start: Date, end: Date): Promise<Session> {
-        throw new Error('Method not implemented.');
+    async findUserSessions(userId: User['id']): Promise<Session[]> {
+        return this.sessionRepo.findAllUserSessions(userId);
     }
 
-    scheduleWorkStation(roomId: workStation['id'], start: Date, end: Date): Promise<Session> {
-        throw new Error('Method not implemented.');
+    async findSessionsById(sessionId: Session['id']): Promise<Session> {
+        const session = await this.sessionRepo.findById(sessionId);
+
+        if (!session) throw new RouteError(HttpStatusCodes.NOT_FOUND, `Session with id: ${sessionId.toString()} was not found`)
+
+        return session;
     }
 
-    addSessionParticipants(sesionId: Session['id'], userIds: User['id'][]): Promise<void> {
-        throw new Error('Method not implemented.');
+    async deleteSession(sessionId: Session['id']): Promise<void> {
+        await this.sessionRepo.delete(sessionId)
     }
 
-    confirmAssistance(sesionId: Session['id'], userId: User['id'], token: string): Promise<void> {
-        throw new Error('Method not implemented.');
+    async createSession(dto: CreateSessionDto): Promise<Session> {
+        const { startAt, endAt } = dto;
+        this.validateSessionTime(startAt, endAt)
+        return this.sessionRepo.createFromDto(dto)
     }
+
+    private validateSessionTime(start: Date, end: Date) {
+        if (start >= end) throw new RouteError(HttpStatusCodes.CONFLICT, 'The start time must be less than the end time.');
+
+        const duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+
+        if (duration > 3) throw new RouteError(HttpStatusCodes.CONFLICT, 'The session cannot last more than 3 hours')
+    }
+
 }

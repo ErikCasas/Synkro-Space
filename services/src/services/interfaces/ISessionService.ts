@@ -1,9 +1,13 @@
-import { MeetingRoom } from '@models/common/meetingRoom.model';
-import { Session, User, workStation } from '@prisma/client';
+import { Entity, Session, User } from '@prisma/client';
+import { CreateSessionDto } from '@src/models/DTOs';
 
 export interface ISessionService {
-    scheduleRoom(roomId: MeetingRoom['id'], start: Date, end: Date): Promise<Session> //TODO
-    scheduleWorkStation(roomId: workStation['id'], start: Date, end: Date): Promise<Session> //TODO
-    addSessionParticipants(sesionId: Session['id'], userIds: User['id'][]): Promise<void>
-    confirmAssistance(sesionId: Session['id'], userId: User['id'], token: string): Promise<void>
+    findUserSessions(userIdid: User['id']): Promise<Session[]>
+
+    findSessionsById(sessionId: Session['id']): Promise<Session>
+
+    deleteSession(sessionId: Session['id']): Promise<void>
+
+    createSession(dto: CreateSessionDto): Promise<Session>
+
 }
