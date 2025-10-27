@@ -13,4 +13,7 @@ export default {
     Base: '/auth',
     Me: '/login',
   },
+  Rooms: {
+    Base: '/rooms',
+  },
 } as const;
