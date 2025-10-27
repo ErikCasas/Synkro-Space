@@ -28,7 +28,7 @@ export class SessionService implements ISessionService {
         const { startAt, endAt } = dto;
         const startInTime = new Date(startAt);
         const endInTime = new Date(endAt);
-        
+
         this.validateSessionTime(startInTime, endInTime)
         return this.sessionRepo.createFromDto(dto)
     }

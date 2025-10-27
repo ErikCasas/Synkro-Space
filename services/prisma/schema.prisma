@@ -41,7 +41,6 @@ model MeetingRoom {
   capacity  Int
   direction String
   roomCode  String    @unique @map("room_code")
-  Session   Session[]
   Entity    Entity[]
 
   @@map("meeting_rooms")
@@ -61,11 +60,6 @@ model Session {
   user               User                 @relation(onDelete: Restrict, fields: [createdBy], references: [id])
   createdBy          String               @map("created_by")
   SessionParticipant SessionParticipant[]
-  MeetingRoom        MeetingRoom?         @relation(fields: [meetingRoomId], references: [id])
-  meetingRoomId      Int?
-  WorkStation        WorkStation?         @relation(fields: [workStationId], references: [id])
-  workStationId      String?
-
   @@map("sessions")
 }
 
@@ -95,7 +89,6 @@ model Credential {
 model WorkStation {
   id      String    @id @default(uuid())
   name    String    @unique
-  Session Session[]
   Entity  Entity[]
 
   @@map("work_station")

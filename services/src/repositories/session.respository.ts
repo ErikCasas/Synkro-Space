@@ -7,11 +7,10 @@ export class SessionRepository implements ISessionRepository {
     async findAllUserSessions(userId: User['id']): Promise<Session[]> {
         return await prisma.session.findMany({
             where: {
-                SessionParticipant: {
-                    some: {
-                        userId
-                    }
-                }
+                OR: [
+                    { createdBy: userId },
+                    { SessionParticipant: { some: { userId } } },
+                ]
             },
             include: {
                 entity: {
@@ -41,6 +40,26 @@ export class SessionRepository implements ISessionRepository {
         return await prisma.session.findUnique({
             where: {
                 id: sessionId
+            },
+            include: {
+                entity: {
+                    include: {
+                        entityType: {
+                            select: {
+                                type: true
+                            }
+                        }
+                    }
+                },
+                SessionParticipant: {
+                    select: {
+                        user: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                }
             }
         })
     }
