@@ -16,4 +16,7 @@ export default {
   Rooms: {
     Base: '/rooms',
   },
+  Stations: {
+    Base: '/work-stations',
+  },
 } as const;

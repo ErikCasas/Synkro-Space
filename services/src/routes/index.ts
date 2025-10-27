@@ -5,6 +5,7 @@ import sessionRouter from './session.router';
 import { authenticateToken } from './middlewares/auth.middleware';
 import authRouter from './auth.router';
 import roomRouter from './room.router';
+import stationRouter from './station.router';
 
 const apiRouter = Router();
 
@@ -15,5 +16,6 @@ apiRouter.use(authenticateToken);
 apiRouter.use(Paths.Users.Base, userRouter);
 apiRouter.use(Paths.Session.Base, sessionRouter);
 apiRouter.use(Paths.Rooms.Base, roomRouter);
+apiRouter.use(Paths.Stations.Base, stationRouter);
 
 export default apiRouter;
