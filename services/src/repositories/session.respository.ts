@@ -29,7 +29,7 @@ export class SessionRepository implements ISessionRepository {
     }
 
     async delete(sessionId: Session['id']): Promise<void> {
-        await prisma.session.deleteMany({
+        await prisma.session.delete({
             where: {
                 id: sessionId
             }

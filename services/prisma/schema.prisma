@@ -37,10 +37,10 @@ model Role {
 }
 
 model MeetingRoom {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   capacity  Int
   direction String
-  roomCode  String    @unique @map("room_code")
+  roomCode  String   @unique @map("room_code")
   Entity    Entity[]
 
   @@map("meeting_rooms")
@@ -60,14 +60,15 @@ model Session {
   user               User                 @relation(onDelete: Restrict, fields: [createdBy], references: [id])
   createdBy          String               @map("created_by")
   SessionParticipant SessionParticipant[]
+
   @@map("sessions")
 }
 
 model SessionParticipant {
   id          String  @id @default(uuid())
-  session     Session @relation(fields: [sesssionId], references: [id])
+  session     Session @relation(fields: [sesssionId], references: [id], onDelete: Cascade)
   sesssionId  String  @map("session_id")
-  user        User    @relation(fields: [userId], references: [id])
+  user        User    @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId      String  @map("user_id")
   haveConfirm Boolean @default(false) @map("have_confirm")
 
@@ -87,9 +88,9 @@ model Credential {
 }
 
 model WorkStation {
-  id      String    @id @default(uuid())
-  name    String    @unique
-  Entity  Entity[]
+  id     String   @id @default(uuid())
+  name   String   @unique
+  Entity Entity[]
 
   @@map("work_station")
 }
