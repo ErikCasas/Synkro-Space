@@ -1,7 +1,7 @@
 export interface CreateSessionDto {
   title: string;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
   entityId?: string;
   invitedUserIds?: string[];
   ownerId: string;

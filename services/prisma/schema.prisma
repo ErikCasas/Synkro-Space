@@ -39,7 +39,7 @@ model Role {
 model MeetingRoom {
   id        Int       @id @default(autoincrement())
   capacity  Int
-  direction String    @unique
+  direction String
   roomCode  String    @unique @map("room_code")
   Session   Session[]
   Entity    Entity[]
@@ -103,7 +103,7 @@ model WorkStation {
 
 model Entity {
   id           String     @id @default(uuid())
-  name         String     @db.VarChar(50)
+  name         String     @unique @db.VarChar(50)
   entityType   EntityType @relation(fields: [entityTypeId], references: [id])
   entityTypeId String     @map("entity_type_id")
 

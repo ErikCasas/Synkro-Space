@@ -26,7 +26,10 @@ export class SessionService implements ISessionService {
 
     async createSession(dto: CreateSessionDto): Promise<Session> {
         const { startAt, endAt } = dto;
-        this.validateSessionTime(startAt, endAt)
+        const startInTime = new Date(startAt);
+        const endInTime = new Date(endAt);
+        
+        this.validateSessionTime(startInTime, endInTime)
         return this.sessionRepo.createFromDto(dto)
     }
 

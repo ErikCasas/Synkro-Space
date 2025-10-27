@@ -1,5 +1,6 @@
 import { AppContainer } from '@src/app/container';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import { CreateSessionDto } from '@src/models/DTOs';
 import { Request, Response } from 'express';
 
 export class SessionController {
@@ -28,4 +29,14 @@ export class SessionController {
 
         res.status(HttpStatusCodes.NO_CONTENT).end();
     };
+
+    public createSession = async (req: Request<unknown, unknown, CreateSessionDto>, res: Response) => {
+        const body = req.body
+
+        console.log(JSON.stringify("req.body"))
+        console.log(JSON.stringify(req.body))
+        const newSesion = await this.sessionService.createSession(body);
+        res.status(HttpStatusCodes.CREATED).send(newSesion);
+    };
+
 }
