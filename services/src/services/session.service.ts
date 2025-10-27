@@ -34,6 +34,16 @@ export class SessionService implements ISessionService {
     }
 
     private validateSessionTime(start: Date, end: Date) {
+        const now = new Date();
+
+        const minStart = new Date(now.getTime() + 15 * 60 * 1000);
+
+        if (start < minStart)
+            throw new RouteError(
+                HttpStatusCodes.CONFLICT,
+                'The session must start at least 15 minutes after the current time.'
+            );
+
         if (start >= end) throw new RouteError(HttpStatusCodes.CONFLICT, 'The start time must be less than the end time.');
 
         const duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
