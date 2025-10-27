@@ -7,6 +7,7 @@ export default {
   Session: {
     Base: '/sessions',
     Me: '/me',
+    SessionId: '/:sessionId',
   },
   Auth: {
     Base: '/auth',

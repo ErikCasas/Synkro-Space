@@ -10,4 +10,22 @@ export class SessionController {
         const userSessions = await this.sessionService.findUserSessions(id);
         res.status(HttpStatusCodes.OK).json(userSessions);
     };
+
+    public findSessionById = async (req: Request<{ sessionId: string }>, res: Response) => {
+
+        const { sessionId } = req.params
+
+        const userSessions = await this.sessionService.findSessionsById(sessionId);
+
+        res.status(HttpStatusCodes.OK).json(userSessions);
+    };
+
+    public deleteSession = async (req: Request<{ sessionId: string }>, res: Response) => {
+
+        const { sessionId } = req.params
+
+        await this.sessionService.deleteSession(sessionId);
+
+        res.status(HttpStatusCodes.NO_CONTENT).end();
+    };
 }
