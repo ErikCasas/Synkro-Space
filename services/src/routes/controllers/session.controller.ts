@@ -37,13 +37,15 @@ export class SessionController {
         res.status(HttpStatusCodes.CREATED).send(newSesion);
     };
 
-    public checkIn = async (req: Request<unknown, { sessionId: string }>, res: Response) => {
+    public checkIn = async (req: Request<unknown, { entityId: string }>, res: Response) => {
         const { user } = req
-        const sessionId = req.query.sessionId
-        console.log(sessionId)
-        if (!sessionId)
-            throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'sessionId are required')
+        const entityId = req.query.entityId
 
-        await this.sessionService.checkIn(sessionId.toString(), user.id)
+        if (!entityId)
+            throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'entityId are required')
+
+        await this.sessionService.checkIn(entityId.toString(), user.id)
+
+        res.status(HttpStatusCodes.NO_CONTENT).send()
     }
 }
