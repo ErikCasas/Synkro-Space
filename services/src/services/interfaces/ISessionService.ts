@@ -10,4 +10,5 @@ export interface ISessionService {
 
     createSession(dto: CreateSessionDto): Promise<Session>
 
+    checkIn(sessionId: Entity['id'], userId: User['id']): Promise<void>
 }

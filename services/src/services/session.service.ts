@@ -1,12 +1,56 @@
-import { Session, User } from '@prisma/client';
+import { Entity, Session, User } from '@prisma/client';
 import { ISessionService } from './interfaces/ISessionService';
 import { ISessionRepository } from '@src/repositories/interfaces/ISessionRepository';
 import { RouteError } from '@src/common/util/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { CreateSessionDto } from '@dtos';
+import { IEntityRepository } from '@src/repositories/interfaces/IEntityrepository';
 
 export class SessionService implements ISessionService {
-    public constructor(private readonly sessionRepo: ISessionRepository) { }
+    public constructor(private readonly sessionRepo: ISessionRepository, private readonly entityRepo: IEntityRepository) { }
+
+    async checkIn(entityId: Entity['id'], userId: User['id']): Promise<void> {
+
+
+        const entity = await this.entityRepo.findById(entityId);
+        if (!entity) {
+            throw new RouteError(HttpStatusCodes.NOT_FOUND, `Entity with id: ${entityId} not found`);
+        }
+
+        const entityType = entity.entityType.type;
+        const linkedId = entity.meetingRoomId ?? entity.workStationId;
+
+        if (!linkedId) {
+            throw new RouteError(HttpStatusCodes.BAD_REQUEST, `Entity ${entity.name} has no linked ${entityType}`);
+        }
+
+        const now = new Date();
+        const session = await this.sessionRepo.findActiveSessionByEntity(entity.id, now);
+
+        if (!session) {
+            throw new RouteError(HttpStatusCodes.NOT_FOUND, `No active session found for ${entityType} ${entity.name}`);
+        }
+
+        const minAcceptableCheckIn = session.startAt.getTime() - 5 * 60 * 1000;
+        const maxAcceptableCheckIn = session.endAt.getTime() - 15 * 60 * 1000;
+
+        if (now.getTime() < minAcceptableCheckIn) {
+            throw new RouteError(HttpStatusCodes.CONFLICT, 'Check-in too early.');
+        }
+
+        if (now.getTime() > maxAcceptableCheckIn) {
+            throw new RouteError(HttpStatusCodes.CONFLICT, 'Check-in too late.');
+        }
+        console.log(session)
+        const isParticipant = session.SessionParticipant.some(p => p.userId === userId);
+        if (!isParticipant) {
+            throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User is not a participant of this session');
+        }
+
+        await this.sessionRepo.confirmUserAttendance(session.id, userId);
+
+
+    }
 
     async findUserSessions(userId: User['id']): Promise<Session[]> {
         return this.sessionRepo.findAllUserSessions(userId);

@@ -1,9 +1,30 @@
 import { Session, User } from '@prisma/client';
-import { ISessionRepository } from './interfaces/ISessionRepository';
+import { ISessionRepository, SessionWithParticipants } from './interfaces/ISessionRepository';
 import { prisma } from '@src/lib/prisma';
 import { CreateSessionDto } from '@dtos';
 
 export class SessionRepository implements ISessionRepository {
+
+    async confirmUserAttendance(sessionId: Session['id'], userId: User['id']): Promise<void> {
+        await prisma.sessionParticipant.updateMany({
+            where: { sesssionId: sessionId, userId },
+            data: { haveConfirm: true },
+        });
+    }
+
+    async findActiveSessionByEntity(entityId: string, now: Date): Promise<SessionWithParticipants | null> {
+        return await prisma.session.findFirst({
+            where: {
+                entityId,
+                startAt: { lte: now },
+                endAt: { gte: now },
+            },
+            include: {
+                SessionParticipant: true,
+            },
+        });
+    }
+
     async findAllUserSessions(userId: User['id']): Promise<Session[]> {
         return await prisma.session.findMany({
             where: {
