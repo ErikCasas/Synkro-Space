@@ -1,22 +1,19 @@
 /* eslint-disable n/no-process-env */
-
 import path from 'path';
 import dotenv from 'dotenv';
 import moduleAlias from 'module-alias';
 
 
-// Check the env
-const NODE_ENV = (process.env.NODE_ENV ?? 'development');
+const envPath = path.resolve(process.cwd(), '.env');
+const result = dotenv.config({ path: envPath });
 
-// Configure "dotenv"
-const result2 = dotenv.config({
-  path: path.join(__dirname, `./config/.env.${NODE_ENV}`),
-});
-if (result2.error) {
-  throw result2.error;
+if (result.error) {
+  console.error('❌ Error loading .env file:', result.error);
+  throw result.error;
 }
 
-// Configure moduleAlias
-if (__filename.endsWith('js')) {
-  moduleAlias.addAlias('@src', __dirname + '/dist');
+console.log('✅ Loaded environment from', envPath);
+
+if (__filename.endsWith('.js')) {
+  moduleAlias.addAlias('@src', path.join(__dirname, '/dist'));
 }

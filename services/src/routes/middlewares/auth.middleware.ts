@@ -3,6 +3,7 @@ import { RouteError } from '@common/util/route-errors';
 import { JwtPayload } from '@models/common/types/jwt';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import ENV from '@src/common/constants/ENV';
 
 export function authenticateToken(req: Request, _: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
@@ -11,7 +12,7 @@ export function authenticateToken(req: Request, _: Response, next: NextFunction)
         throw new RouteError(HttpStatusCodes.UNAUTHORIZED, 'Token required');
 
     } try {
-        const secret = process.env.JWT_SECRET!;
+        const secret = ENV.jwtSecret;
         const decoded = jwt.verify(token, secret) as JwtPayload;
         req.user = decoded as JwtPayload;
 
