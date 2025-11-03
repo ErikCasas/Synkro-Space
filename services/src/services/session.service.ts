@@ -41,7 +41,7 @@ export class SessionService implements ISessionService {
         if (now.getTime() > maxAcceptableCheckIn) {
             throw new RouteError(HttpStatusCodes.CONFLICT, 'Check-in too late.');
         }
-        console.log(session)
+        console.log({session})
         const isParticipant = session.SessionParticipant.some(p => p.userId === userId);
         if (!isParticipant) {
             throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User is not a participant of this session');

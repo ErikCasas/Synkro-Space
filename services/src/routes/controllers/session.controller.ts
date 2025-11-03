@@ -1,5 +1,6 @@
 import { AppContainer } from '@src/app/container';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import { RouteError } from '@src/common/util/route-errors';
 import { CreateSessionDto } from '@src/models/DTOs';
 import { Request, Response } from 'express';
 
@@ -32,11 +33,17 @@ export class SessionController {
 
     public createSession = async (req: Request<unknown, unknown, CreateSessionDto>, res: Response) => {
         const body = req.body
-
-        console.log(JSON.stringify("req.body"))
-        console.log(JSON.stringify(req.body))
         const newSesion = await this.sessionService.createSession(body);
         res.status(HttpStatusCodes.CREATED).send(newSesion);
     };
 
+    public checkIn = async (req: Request<unknown, { sessionId: string }>, res: Response) => {
+        const { user } = req
+        const sessionId = req.query.sessionId
+        console.log(sessionId)
+        if (!sessionId)
+            throw new RouteError(HttpStatusCodes.BAD_REQUEST, 'sessionId are required')
+
+        await this.sessionService.checkIn(sessionId.toString(), user.id)
+    }
 }

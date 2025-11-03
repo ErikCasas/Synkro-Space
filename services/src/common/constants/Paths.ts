@@ -8,6 +8,7 @@ export default {
     Base: '/sessions',
     Me: '/me',
     SessionId: '/:sessionId',
+    Check: '/check',
   },
   Auth: {
     Base: '/auth',
