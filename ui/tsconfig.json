@@ -9,6 +9,8 @@
       "@/*": ["./src/*"],
       "@components": ["./src/components"],
       "@hooks": ["./src/hooks"],
+      "@pages/*": ["./src/pages/*"],
+      "@providers": ["./src/providers"],
       "@pages": ["./src/pages"]
     },
 
