@@ -1,10 +1,11 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { lazy } from 'react';
 import { AuthPage } from '@/pages/AuthPage';
 import { ProtectedRoute } from '@/utils/ProtectedRouter';
 import { AuthProvider, HeroProvider } from '@/providers';
 import MainLayout from '@/layouts/Main';
 import { Router } from './routes';
+import { GeneralLayout } from '@/layouts/General';
 
 const MainPage = lazy(() => import('../pages/MainPage'))
 
@@ -13,7 +14,7 @@ export const router = createBrowserRouter([
     element: (
     <AuthProvider>
       <HeroProvider>
-        <Outlet />
+        <GeneralLayout/>
       </HeroProvider>
     </AuthProvider>
     ),
