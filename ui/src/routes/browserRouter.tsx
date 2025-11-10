@@ -3,6 +3,8 @@ import { lazy } from 'react';
 import { AuthPage } from '@/pages/AuthPage';
 import { ProtectedRoute } from '@/utils/ProtectedRouter';
 import { AuthProvider, HeroProvider } from '@/providers';
+import MainLayout from '@/layouts/Main';
+import { Router } from './routes';
 
 const MainPage = lazy(() => import('../pages/MainPage'))
 
@@ -17,14 +19,18 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: '/',
-        element: <ProtectedRoute />,
+        path: Router.base,
+        element:
+        <MainLayout>
+          <ProtectedRoute />
+        </MainLayout>,
+      
         children: [
-          { path: '/synkro', element: <MainPage /> }
+          { path: Router.main, element: <MainPage /> }
         ]
       },
       {
-        path: '/auth',
+        path: Router.default,
         element: <AuthPage />
       }
     ]
