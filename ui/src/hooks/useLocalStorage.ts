@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-export const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] => {
+export const useLocalStorage = <T>(key: LocalStorageKeyItem, initialValue: T): [T, Dispatch<SetStateAction<T>>] => {
 
     const [storedValue, setStoredValue] = useState(initialValue);
     const [firstLoadDone, setFirstLoadDone] = useState(false);
@@ -39,3 +39,5 @@ export const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<S
 
     return [storedValue, setStoredValue];
 }
+
+type LocalStorageKeyItem = 'token'
