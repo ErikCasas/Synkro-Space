@@ -3,7 +3,7 @@ import { HttpClient } from "./httpClient"
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1"
 
 export const createAuthClient = () => {
-  console.log({ API_URL })
+  
   const client = new HttpClient(API_URL)
 
   return {
