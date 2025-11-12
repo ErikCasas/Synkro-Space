@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (token) {
+      setToken(token)
       setUser({ name: 'Usuario' })
     }
   }, [token])
