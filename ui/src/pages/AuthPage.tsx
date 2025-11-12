@@ -1,13 +1,26 @@
 import { useEffect, useRef, useState } from "react"
 import { Spinner } from "@heroui/react";
+import { useAuth } from '@/hooks';
+import { useNavigate } from 'react-router-dom';
+import { Router } from '@/routes/routes';
 
 export const AuthPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Login:", { email, password }) //TODO
+    setIsLoading(true)
+    try {
+      await login(email, password)
+      navigate(Router.main, { replace: true })
+    } catch (err) {
+      console.error("❌ Error al iniciar sesión:", err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const texts = [
@@ -95,7 +108,7 @@ export const AuthPage = () => {
               type="submit"
               className="w-full max-w-sm mt-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 font-semibold flex justify-center items-center"
             >
-              {false ? "Sincronizar" : <Spinner variant="wave" color="white" />}
+              {isLoading ? <Spinner variant="wave" color="white" /> : "Sincronizar"}
             </button>
           </form>
         </div>
