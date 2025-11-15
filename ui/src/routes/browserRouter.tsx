@@ -43,10 +43,10 @@ export const router = createBrowserRouter([
         ]
       },
 
-      // {
-      //   path: Router.default,
-      //   element: <AuthPage />
-      // }
+      {
+        path: Router.default,
+        element: <AuthPage />
+      }
     ]
   }
 ])
