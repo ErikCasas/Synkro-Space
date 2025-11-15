@@ -1,7 +1,9 @@
+import { Navbar } from '@/components';
+
 const MainPage = () => {
   return (
     <>
-      <h1>Hola</h1>
+      <Navbar />
     </>
   );
 };
