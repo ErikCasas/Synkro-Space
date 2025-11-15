@@ -11,7 +11,8 @@ export const Navbar = () => {
 
   return (
     <HeroUINavbar shouldHideOnScroll className='
-        w-full absolute h-20
+
+        w-full h-20
         bg-gradient-to-b from-black/100 to-transparent
         backdrop-blur-lg-' >
       <NavbarBrand>

@@ -23,19 +23,14 @@ export const GradientBackground = () => {
       tgY = e.clientY
     })
 
-    move()  
+    move()
     return () => window.removeEventListener("mousemove", () => { })
   }, [])
 
   return (
     <>
       <div
-        className="
-        fixed inset-0 
-        -z-10 
-        pointer-events-none
-        overflow-hidden
-      "
+        className="fixed inset-0 -z-10 pointer-events-none"
       >
         <div className="gradient-bg w-full h-full">
           <svg className="fixed top-0 left-0 w-0 h-0" xmlns="http://www.w3.org/2000/svg">

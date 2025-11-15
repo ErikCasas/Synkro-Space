@@ -83,7 +83,7 @@ export const AuthPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-between items-center w-full md:w-1/2 h-full bg-black/20 backdrop-blur-xl border-r border-white/10 p-8 rounded-l-4xl">
+      <div className="flex flex-col justify-between items-center w-full md:w-1/2 h-full bg-black/20 backdrop-blur-xl border-r border-white/10 rounded-l-4xl">
         <div className="flex flex-col justify-center w-full h-full max-w-sm">
 
           <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
