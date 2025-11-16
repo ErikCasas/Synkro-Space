@@ -1,5 +1,5 @@
 import { AuthRepository } from '@src/repositories/authRepository';
-import { EntityRepository } from '@src/repositories/EntityRepository';
+import { EntityRepository } from '@src/repositories/entityRepository';
 import { RoomRepository } from '@src/repositories/roomRepository';
 import { SessionRepository } from '@src/repositories/session.respository';
 import { StationRepository } from '@src/repositories/stationsRepository';
