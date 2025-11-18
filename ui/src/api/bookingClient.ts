@@ -4,7 +4,15 @@ import { BookingResponse } from './responsesModels/bookingResponse.model'
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1"
 
-export const bookinClient = () => {
+interface sessionPayload {
+    title: string,
+    startAt: string,
+    endAt: string,
+    entityId: string,
+    invitedUserIds: string[],
+}
+
+export const bookingClient = () => {
 
     const client = new HttpClient(API_URL)
 
@@ -29,6 +37,8 @@ export const bookinClient = () => {
 
             return bookings
         },
-
+        createBooking: async (payload: sessionPayload): Promise<void> => {
+            await client.post("/sessions", payload)
+        }
     }
 }

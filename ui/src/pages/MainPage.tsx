@@ -1,12 +1,12 @@
-import { bookinClient } from '@/api/bookingClient';
-import { BookingCard, Navbar } from '@/components';
+import { bookingClient } from '@/api/bookingClient';
+import { BookingCard, BookingForm, Navbar } from '@/components';
 import { Booking } from '@/models';
 import { useEffect, useState } from 'react';
 
 const MainPage = () => {
 
   const [bookings, setBookings] = useState<Booking[]>([])
-  const { getMySessions } = bookinClient()
+  const { getMySessions } = bookingClient()
 
   const getUserSessions = async () => {
     const bookings = await getMySessions()
@@ -32,7 +32,7 @@ const MainPage = () => {
         </div>
 
         <div className="container flex flex-col w-2/5 items-center backdrop-blur-xl border-r border-white/15 rounded-4xl">
-
+          <BookingForm />
         </div>
 
       </div>
