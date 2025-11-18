@@ -14,7 +14,11 @@ export class UserRepository implements IUserRepository {
     }
 
     public async findByAll(): Promise<User[]> {
-        return await prisma.user.findMany();
+        return await prisma.user.findMany({
+            include:{
+                role: true
+            }
+        });
     }
 }
 
