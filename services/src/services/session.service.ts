@@ -67,31 +67,35 @@ export class SessionService implements ISessionService {
         await this.sessionRepo.delete(sessionId)
     }
 
-    async createSession(dto: CreateSessionDto): Promise<Session> {
+    async createSession(dto: CreateSessionDto, ownerId: string): Promise<Session> {
         const { startAt, endAt } = dto;
         const startInTime = new Date(startAt);
         const endInTime = new Date(endAt);
 
         this.validateSessionTime(startInTime, endInTime)
-        return this.sessionRepo.createFromDto(dto)
+        return this.sessionRepo.createFromDto(dto, ownerId)
     }
 
     private validateSessionTime(start: Date, end: Date) {
-        const now = new Date();
+        const nowUtc = new Date(Date.now());
 
-        const minStart = new Date(now.getTime() + 15 * 60 * 1000);
+        const minStart = nowUtc.getTime() + 15 * 60 * 1000;
 
-        if (start < minStart)
+        if (start.getTime() < minStart) {
             throw new RouteError(
                 HttpStatusCodes.CONFLICT,
                 'The session must start at least 15 minutes after the current time.'
             );
+        }
 
-        if (start >= end) throw new RouteError(HttpStatusCodes.CONFLICT, 'The start time must be less than the end time.');
+        if (start.getTime() >= end.getTime())
+            throw new RouteError(HttpStatusCodes.CONFLICT, 'The start time must be less than the end time.');
 
         const duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
 
-        if (duration > 3) throw new RouteError(HttpStatusCodes.CONFLICT, 'The session cannot last more than 3 hours')
+        if (duration > 3)
+            throw new RouteError(HttpStatusCodes.CONFLICT, 'The session cannot last more than 3 hours');
     }
+
 
 }

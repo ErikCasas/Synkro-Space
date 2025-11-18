@@ -4,5 +4,4 @@ export interface CreateSessionDto {
   endAt: string;
   entityId?: string;
   invitedUserIds?: string[];
-  ownerId: string;
 }

@@ -33,7 +33,7 @@ export class SessionController {
 
     public createSession = async (req: Request<unknown, unknown, CreateSessionDto>, res: Response) => {
         const body = req.body
-        const newSesion = await this.sessionService.createSession(body);
+        const newSesion = await this.sessionService.createSession(body, req.user.id);
         res.status(HttpStatusCodes.CREATED).send(newSesion);
     };
 

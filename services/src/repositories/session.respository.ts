@@ -85,8 +85,8 @@ export class SessionRepository implements ISessionRepository {
         })
     }
 
-    async createFromDto(sessionDto: CreateSessionDto): Promise<Session> {
-        const { ownerId, entityId, invitedUserIds = [], ...rest } = sessionDto;
+    async createFromDto(sessionDto: CreateSessionDto, ownerId: string): Promise<Session> {
+        const { entityId, invitedUserIds = [], ...rest } = sessionDto;
 
         return prisma.session.create({
             data: {

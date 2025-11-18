@@ -8,7 +8,7 @@ export interface ISessionService {
 
     deleteSession(sessionId: Session['id']): Promise<void>
 
-    createSession(dto: CreateSessionDto): Promise<Session>
+    createSession(dto: CreateSessionDto, ownerId: string): Promise<Session>
 
     checkIn(sessionId: Entity['id'], userId: User['id']): Promise<void>
 }
