@@ -10,7 +10,6 @@ const MainPage = () => {
 
   const getUserSessions = async () => {
     const bookings = await getMySessions()
-    console.log({ bookings })
     setBookings(bookings)
     try {
 
