@@ -5,7 +5,9 @@ import { SessionRepository } from '@src/repositories/session.respository';
 import { StationRepository } from '@src/repositories/stationsRepository';
 import { UserRepository } from '@src/repositories/user.repository';
 import { AuthService } from '@src/services/auth.service';
+import { EntityService } from '@src/services/entity.service';
 import { IAuthService } from '@src/services/interfaces/IAuthService';
+import { IEntityService } from '@src/services/interfaces/IEntityService';
 import { IRoomService } from '@src/services/interfaces/IRoomService';
 import { ISessionService } from '@src/services/interfaces/ISessionService';
 import { IStationService } from '@src/services/interfaces/IStationService';
@@ -20,4 +22,5 @@ export class AppContainer {
     public static authService: IAuthService = new AuthService(new AuthRepository())
     public static roomService: IRoomService = new RoomService(new RoomRepository())
     public static stationService: IStationService = new StationService(new StationRepository())
+    public static entityService: IEntityService = new EntityService(new EntityRepository())
 }

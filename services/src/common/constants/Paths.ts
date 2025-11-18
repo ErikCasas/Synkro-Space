@@ -20,4 +20,7 @@ export default {
   Stations: {
     Base: '/work-stations',
   },
+  Entities: {
+    Base: '/entities'
+  }
 } as const;
