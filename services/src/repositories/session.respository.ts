@@ -76,7 +76,8 @@ export class SessionRepository implements ISessionRepository {
                     select: {
                         user: {
                             select: {
-                                name: true
+                                name: true,
+                                id: true
                             }
                         }
                     }
