@@ -43,7 +43,7 @@ export const BookingForm = () => {
     const [entities, setEntities] = useState<Entity[]>([])
     const [users, setUsers] = useState<{ id: string; name: string }[]>([])
 
-    const [backendError, setBackendError] = useState<string>("")
+    const [formError, setFormError] = useState<string>("")
     const [loading, setLoading] = useState(false)
 
     const entityAPI = entityClient()
@@ -69,11 +69,11 @@ export const BookingForm = () => {
     }
 
     const handleSubmit = async () => {
-        setBackendError("")
+        setFormError("")
         setLoading(true)
         try {
             if (!form.startAt || !form.endAt) {
-                setBackendError("Debes seleccionar una fecha y hora válidas.")
+                setFormError("Debes seleccionar una fecha y hora válidas.")
                 setLoading(false)
                 return
             }
@@ -85,18 +85,24 @@ export const BookingForm = () => {
                 entityId: form.entityId,
                 invitedUserIds: form.invitedUserIds,
             }
-            console.log({ payload })
+
             await bookingAPI.createBooking(payload)
             alert("Reserva creada correctamente")
+            setForm({
+                title: "",
+                startAt: null,
+                endAt: null,
+                entityId: "",
+                invitedUserIds: []
+            })
         } catch (err: any) {
-            setBackendError(err?.message || "Error desconocido al crear la reserva")
+            setFormError(err?.message || "Error desconocido al crear la reserva")
         } finally {
             setLoading(false)
         }
     }
 
     const dateFromCalendar = (calendarDate: DateValue) => {
-        // Construye la fecha en hora LOCAL
         return new Date(
             calendarDate.year,
             calendarDate.month - 1,
@@ -202,8 +208,8 @@ export const BookingForm = () => {
                     <p><strong>Entidad:</strong> {currentEntity?.name || "—"}</p>
                 </div>
 
-                {backendError && (
-                    <p className="text-red-400 text-sm text-center">{backendError}</p>
+                {formError && (
+                    <p className="text-red-400 text-sm text-center">{formError}</p>
                 )}
 
                 <Button
