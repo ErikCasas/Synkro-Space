@@ -15,10 +15,10 @@ export class HttpClient {
         return token
     }
 
-    private async request(
+    private async request<T>(
         endpoint: string,
         options: RequestInit = {}
-    ): Promise<Response> {
+    ): Promise<T> {
         const token = this.getToken()
         const headers = new Headers(options.headers || {})
 
@@ -30,37 +30,38 @@ export class HttpClient {
             headers,
         })
 
-        // Interceptor de respuesta
         if (!response.ok) {
-            // Ejemplo: token expirado
             if (response.status === 401) {
                 console.warn("Token expirado o inválido")
             }
             throw new Error(`HTTP error: ${response.status}`)
         }
 
-        return response
+        // Aquí parseamos automáticamente y devolvemos tipado
+        const data = (await response.json()) as T
+        return data
     }
 
-    public get(endpoint: string) {
-        return this.request(endpoint)
+    public get<T>(endpoint: string): Promise<T> {
+        return this.request<T>(endpoint)
     }
 
-    public post(endpoint: string, body?: unknown) {
-        return this.request(endpoint, {
+    public post<T>(endpoint: string, body?: unknown): Promise<T> {
+        return this.request<T>(endpoint, {
             method: "POST",
             body: JSON.stringify(body),
         })
     }
 
-    public put(endpoint: string, body?: unknown) {
-        return this.request(endpoint, {
+    public put<T>(endpoint: string, body?: unknown): Promise<T> {
+        return this.request<T>(endpoint, {
             method: "PUT",
             body: JSON.stringify(body),
         })
     }
 
-    public delete(endpoint: string) {
-        return this.request(endpoint, { method: "DELETE" })
+    public delete<T>(endpoint: string): Promise<T> {
+        return this.request<T>(endpoint, { method: "DELETE" })
     }
+
 }
