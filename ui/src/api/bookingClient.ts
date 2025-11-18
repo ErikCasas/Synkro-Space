@@ -4,13 +4,13 @@ import { BookingResponse } from './responsesModels/bookingResponse.model'
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1"
 
-export const createAuthClient = () => {
+export const bookinClient = () => {
 
     const client = new HttpClient(API_URL)
 
     return {
         getMySessions: async (): Promise<Booking[]> => {
-            const response = await client.get<BookingResponse[]>("/auth")
+            const response = await client.get<BookingResponse[]>("/sessions/me")
             const bookings: Booking[] = response.map((item) => ({
                 ...item,
                 startAt: new Date(item.startAt),

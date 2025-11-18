@@ -10,7 +10,7 @@ export class HttpClient {
     private getToken = (): string => {
         const token = localStorage.getItem(LocalStorageItems.TOKEN)
 
-        if (!token) throw new Error()
+        if (!token) return ""
 
         return token
     }

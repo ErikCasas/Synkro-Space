@@ -1,43 +1,44 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-export const useLocalStorage = <T>(key: LocalStorageKeyItem, initialValue: T): [T, Dispatch<SetStateAction<T>>] => {
-
-    const [storedValue, setStoredValue] = useState(initialValue);
-    const [firstLoadDone, setFirstLoadDone] = useState(false);
-
-    useEffect(() => {
-        const fromLocal = () => {
-            if (typeof window === 'undefined') {
-                return initialValue;
-            }
-            try {
-                const item = window.localStorage.getItem(key);
-                return item ? JSON.parse(item) as T : initialValue;
-            } catch (error) {
-                console.error(error);
-                return initialValue;
-            }
-        };
-
-        setStoredValue(fromLocal);
-        setFirstLoadDone(true);
-    }, [initialValue, key]);
+export const useLocalStorage = <T>(
+    key: string,
+    initialValue: T
+): [T, Dispatch<SetStateAction<T>>] => {
+    const [storedValue, setStoredValue] = useState<T>(initialValue)
+    const [firstLoadDone, setFirstLoadDone] = useState(false)
 
     useEffect(() => {
-        if (!firstLoadDone) {
-            return;
-        }
-
         try {
-            if (typeof window !== 'undefined') {
-                window.localStorage.setItem(key, JSON.stringify(storedValue));
+            const item = window.localStorage.getItem(key)
+            if (item !== null) {
+                // si es un string plano (no JSON válido), no lo parsees
+                try {
+                    setStoredValue(JSON.parse(item))
+                } catch {
+                    setStoredValue(item as T)
+                }
             }
         } catch (error) {
-            console.log(error);
+            console.error("Error reading localStorage:", error)
+            setStoredValue(initialValue)
+        } finally {
+            setFirstLoadDone(true)
         }
-    }, [storedValue, firstLoadDone, key]);
+    }, [key])
 
-    return [storedValue, setStoredValue];
+    useEffect(() => {
+        if (!firstLoadDone) return
+        try {
+            const value =
+                typeof storedValue === "string"
+                    ? storedValue // evita comillas dobles
+                    : JSON.stringify(storedValue)
+
+            window.localStorage.setItem(key, value)
+        } catch (error) {
+            console.error("Error writing localStorage:", error)
+        }
+    }, [storedValue, firstLoadDone, key])
+
+    return [storedValue, setStoredValue]
 }
-
-type LocalStorageKeyItem = 'token'
