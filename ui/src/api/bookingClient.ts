@@ -64,8 +64,8 @@ export const bookingClient = () => {
             }
         },
         checkIn: async (entityId: string): Promise<void> => {
-            const queryParams = new URLSearchParams({ entityId })
-            await client.get(queryParams.toString())
+            if (!entityId) return
+            await client.get(`?entityId=${entityId}`)
         }
     }
 }

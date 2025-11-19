@@ -9,15 +9,14 @@ const MainPage = () => {
   const { getUserBookings: getMySessions } = bookingClient()
 
   const getUserSessions = async () => {
-    const bookings = await getMySessions()
-    setBookings(bookings)
     try {
-
+      const bookings = await getMySessions()
+      setBookings(bookings)
     } catch (err) {
       console.error("❌ Error al iniciar sesión:", err)
     }
   }
-  console.log("BarcodeDetector" in window);
+
   useEffect(() => {
     getUserSessions()
   }, [])
@@ -32,7 +31,7 @@ const MainPage = () => {
         </div>
 
         <div className="container flex flex-col w-2/5 items-center backdrop-blur-xl border-r border-white/15 rounded-4xl">
-          <BookingForm />
+          <BookingForm onSubmit={async () => await getMySessions()} />
         </div>
 
       </div>

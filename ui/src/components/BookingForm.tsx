@@ -30,8 +30,10 @@ interface FormData {
     entityId: string
     invitedUserIds: string[]
 }
-
-export const BookingForm = () => {
+interface Props {
+    onSubmit: () => void
+}
+export const BookingForm = ({ onSubmit }: Props) => {
     const [form, setForm] = useState<FormData>({
         title: "",
         startAt: null,
@@ -95,6 +97,7 @@ export const BookingForm = () => {
                 entityId: "",
                 invitedUserIds: []
             })
+            onSubmit()
         } catch (err: any) {
             setFormError(err?.message || "Error desconocido al crear la reserva")
         } finally {
