@@ -11,6 +11,7 @@ import {
 import { format } from "date-fns"
 import { BookingDetail } from "@/models"
 import { bookingClient } from "@/api/bookingClient"
+import { CheckInScanner } from './CheckInScanner'
 
 interface BookingDetailsModalProps {
     bookingId: string | null
@@ -86,7 +87,7 @@ export const BookingDetailModal = ({
                             <p><strong>Inicio:</strong> {format(booking.startAt, "dd/MM/yyyy HH:mm")}</p>
                             <p><strong>Fin:</strong> {format(booking.endAt, "dd/MM/yyyy HH:mm")}</p>
                             <p><strong>Asistentes:</strong> {booking.sessionParticipants?.length || 0}</p>
-                            {booking.sessionParticipants.map(participant => <p> {participant.name}</p>)}
+                            {booking.sessionParticipants.map(participant => <p key={participant.id}>  {participant.name}</p>)}
                         </>
                     )}
                 </ModalBody>
@@ -96,6 +97,7 @@ export const BookingDetailModal = ({
                         Cerrar
                     </Button>
                 </ModalFooter>
+                    <CheckInScanner />
             </ModalContent>
         </Modal>
     )

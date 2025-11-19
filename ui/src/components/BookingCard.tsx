@@ -5,10 +5,10 @@ import { differenceInMinutes, isWithinInterval, format } from "date-fns"
 import { es } from "date-fns/locale"
 import { useState } from 'react'
 import { BookingDetailModal } from './BookingDetailModal'
-
 interface BookingCardProps {
     booking: Booking
 }
+
 
 export const BookingCard = ({ booking }: BookingCardProps) => {
 
@@ -41,6 +41,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
 
     return (
         <>
+
             <BookingDetailModal
                 bookingId={selectedBooking}
                 isOpen={!!selectedBooking}
