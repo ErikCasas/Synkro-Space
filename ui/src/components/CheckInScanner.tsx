@@ -1,4 +1,4 @@
-import { Html5Qrcode, Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode, Html5QrcodeScanner, Html5QrcodeScanType } from 'html5-qrcode';
 import { useEffect, useRef } from 'react';
 
 const qrcodeId = "html5qr-code-full-region";
@@ -8,33 +8,51 @@ export const CheckInScanner = () => {
 
     const scannerRef = useRef<Html5QrcodeScanner | null>(null);
     const isMounted = useRef(true);
-    
-    function onScanSuccess(result: string) {
+
+    const onScanSuccess = (result: string) => {
         console.log(`Scan result: ${result}`);
     }
 
-    function onScanError(errorMessage: string) {
+    const onScanError = (errorMessage: string) => {
         console.error(`Scan error: ${errorMessage}`);
     }
 
-    let html5QrCode: Html5Qrcode;
-
     useEffect(() => {
-        if (!html5QrCode?.getState()) {
-            html5QrCode = new Html5Qrcode(qrcodeId);
+        const startScanning = async (): Promise<Html5QrcodeScanner> => {
 
-            const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.777778 };
+            const html5QrcodeScanner = new Html5QrcodeScanner(qrcodeId, {
+                fps: 25,
+                supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+                showTorchButtonIfSupported: false,
+                showZoomSliderIfSupported: false,
+                qrbox: { width: 250, height: 250 }
+            }, true);
 
-            html5QrCode.start(
-                { facingMode: "environment" },
-                config,
-                onScanSuccess, onScanError
-            );
-        }
+            await html5QrcodeScanner.render(onScanSuccess, onScanError);
+            return html5QrcodeScanner;
+        };
+
+        const initScanner = async () => {
+            if (isMounted.current) {
+                scannerRef.current = await startScanning();
+            }
+        };
+
+        initScanner();
 
         return () => {
-            // Anything in here is fired on component unmount.
-
+            isMounted.current = false;
+            const clearScanner = async () => {
+                try {
+                    if (scannerRef.current) {
+                        scannerRef.current.pause();
+                        await scannerRef.current.clear();
+                    }
+                } catch (error) {
+                    console.log('Failed to clear html5QrcodeScanner. ', error);
+                }
+            };
+            clearScanner();
         };
     }, []);
 
