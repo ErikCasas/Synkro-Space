@@ -1,8 +1,9 @@
 import { Booking, BookingDetail } from '@/models'
 import { HttpClient } from './httpClient'
 import { BookingByIdResponse, BookingResponse } from './responsesModels/bookingResponse.model'
+import { URLSearchParams } from 'url'
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1"
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1/sessions"
 
 interface sessionPayload {
     title: string,
@@ -18,7 +19,7 @@ export const bookingClient = () => {
 
     return {
         getUserBookings: async (): Promise<Booking[]> => {
-            const response = await client.get<BookingResponse[]>("/sessions/me")
+            const response = await client.get<BookingResponse[]>("/me")
             const bookings: Booking[] = response.map((item) => ({
                 ...item,
                 startAt: new Date(item.startAt),
@@ -38,10 +39,10 @@ export const bookingClient = () => {
             return bookings
         },
         createBooking: async (payload: sessionPayload): Promise<void> => {
-            await client.post("/sessions", payload)
+            await client.post("/", payload)
         },
         getBookingById: async (bookingId: string): Promise<BookingDetail> => {
-            const response = await client.get<BookingByIdResponse>(`/sessions/${bookingId}`)
+            const response = await client.get<BookingByIdResponse>(`/${bookingId}`)
 
             return {
                 ...response,
@@ -61,6 +62,10 @@ export const bookingClient = () => {
                     ...response.SessionParticipant.map(item => item.user)
                 ]
             }
+        },
+        checkIn: async (entityId: string): Promise<void> => {
+            const queryParams = new URLSearchParams({ entityId })
+            await client.get(queryParams.toString())
         }
     }
 }

@@ -1,4 +1,5 @@
-import { Html5Qrcode, Html5QrcodeScanner, Html5QrcodeScanType } from 'html5-qrcode';
+import { bookingClient } from '@/api/bookingClient';
+import { Html5QrcodeScanner, Html5QrcodeScanType } from 'html5-qrcode';
 import { useEffect, useRef } from 'react';
 
 const qrcodeId = "html5qr-code-full-region";
@@ -8,9 +9,10 @@ export const CheckInScanner = () => {
 
     const scannerRef = useRef<Html5QrcodeScanner | null>(null);
     const isMounted = useRef(true);
+    const bookingApi = bookingClient()
 
-    const onScanSuccess = (result: string) => {
-        console.log(`Scan result: ${result}`);
+    const onScanSuccess = async (entityId: string) => {
+        await bookingApi.checkIn(entityId)
     }
 
     const onScanError = (errorMessage: string) => {
@@ -25,10 +27,10 @@ export const CheckInScanner = () => {
                 supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
                 showTorchButtonIfSupported: false,
                 showZoomSliderIfSupported: false,
-                qrbox: { width: 250, height: 250 }
+                qrbox: { width: 550, height: 550 }
             }, true);
 
-            await html5QrcodeScanner.render(onScanSuccess, onScanError);
+            html5QrcodeScanner.render(onScanSuccess, onScanError);
             return html5QrcodeScanner;
         };
 
