@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const MainPage = () => {
 
   const [bookings, setBookings] = useState<Booking[]>([])
-  const { getMySessions } = bookingClient()
+  const { getUserBookings: getMySessions } = bookingClient()
 
   const getUserSessions = async () => {
     const bookings = await getMySessions()
@@ -17,7 +17,7 @@ const MainPage = () => {
       console.error("❌ Error al iniciar sesión:", err)
     }
   }
-
+  console.log("BarcodeDetector" in window);
   useEffect(() => {
     getUserSessions()
   }, [])

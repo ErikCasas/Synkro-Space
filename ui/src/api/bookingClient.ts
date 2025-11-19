@@ -1,6 +1,6 @@
-import { Booking } from '@/models'
+import { Booking, BookingDetail } from '@/models'
 import { HttpClient } from './httpClient'
-import { BookingResponse } from './responsesModels/bookingResponse.model'
+import { BookingByIdResponse, BookingResponse } from './responsesModels/bookingResponse.model'
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1"
 
@@ -17,7 +17,7 @@ export const bookingClient = () => {
     const client = new HttpClient(API_URL)
 
     return {
-        getMySessions: async (): Promise<Booking[]> => {
+        getUserBookings: async (): Promise<Booking[]> => {
             const response = await client.get<BookingResponse[]>("/sessions/me")
             const bookings: Booking[] = response.map((item) => ({
                 ...item,
@@ -39,6 +39,28 @@ export const bookingClient = () => {
         },
         createBooking: async (payload: sessionPayload): Promise<void> => {
             await client.post("/sessions", payload)
+        },
+        getBookingById: async (bookingId: string): Promise<BookingDetail> => {
+            const response = await client.get<BookingByIdResponse>(`/sessions/${bookingId}`)
+
+            return {
+                ...response,
+                startAt: new Date(response.startAt),
+                endAt: new Date(response.endAt),
+                createdAt: new Date(response.createdAt),
+                updatedAt: new Date(response.updatedAt),
+                entity: {
+                    id: response.entity.id,
+                    name: response.entity.name,
+                    entityTypeId: response.entity.entityTypeId,
+                    meetingRoomId: response.entity.meetingRoomId,
+                    workStationId: response.entity.workStationId,
+                    entityType: response.entity.entityType.type,
+                },
+                sessionParticipants: [
+                    ...response.SessionParticipant.map(item => item.user)
+                ]
+            }
         }
     }
 }

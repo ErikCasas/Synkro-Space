@@ -18,3 +18,31 @@ export interface BookingResponse {
         }
     }
 }
+
+
+export interface BookingByIdResponse {
+    id: string
+    title: string
+    startAt: string
+    endAt: string
+    createdAt: string
+    updatedAt: string
+    entityId: string
+    createdBy: string
+    entity: {
+        id: string
+        name: string
+        entityTypeId: string
+        meetingRoomId?: number 
+        workStationId?: string 
+        entityType: {
+            type: "MeetingRoom" | "WorkStation"
+        }
+    },
+    SessionParticipant: {
+        user: {
+            id: string
+            name: string
+        }
+    }[]
+}
