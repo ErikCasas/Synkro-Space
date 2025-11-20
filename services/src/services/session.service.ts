@@ -15,7 +15,7 @@ export class SessionService implements ISessionService {
         if (!entity) {
             throw new RouteError(HttpStatusCodes.NOT_FOUND, `Entity with id: ${entityId} not found`);
         }
-
+   
         const entityType = entity.entityType.type;
         const linkedId = entity.meetingRoomId ?? entity.workStationId;
 
@@ -26,6 +26,7 @@ export class SessionService implements ISessionService {
         const now = new Date();
         const session = await this.sessionRepo.findActiveSessionByEntity(entity.id, now);
 
+      
         if (!session) {
             throw new RouteError(HttpStatusCodes.NOT_FOUND, `No active session found for ${entityType} ${entity.name}`);
         }
@@ -36,7 +37,7 @@ export class SessionService implements ISessionService {
         if (now.getTime() < minAcceptableCheckIn) {
             throw new RouteError(HttpStatusCodes.CONFLICT, 'Check-in too early.');
         }
-
+        
         if (now.getTime() > maxAcceptableCheckIn) {
             throw new RouteError(HttpStatusCodes.CONFLICT, 'Check-in too late.');
         }
@@ -45,6 +46,7 @@ export class SessionService implements ISessionService {
         if (!isParticipant) {
             throw new RouteError(HttpStatusCodes.FORBIDDEN, 'User is not a participant of this session');
         }
+
 
         await this.sessionRepo.confirmUserAttendance(session.id, userId);
 
@@ -93,9 +95,7 @@ export class SessionService implements ISessionService {
 
         const duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
 
-        if (duration > 3)
-            throw new RouteError(HttpStatusCodes.CONFLICT, 'The session cannot last more than 3 hours');
+        if (duration > 8)
+            throw new RouteError(HttpStatusCodes.CONFLICT, 'The session cannot last more than 8 hours');
     }
-
-
 }
