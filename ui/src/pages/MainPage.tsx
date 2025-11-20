@@ -31,7 +31,7 @@ const MainPage = () => {
         </div>
 
         <div className="container flex flex-col w-2/5 items-center backdrop-blur-xl border-r border-white/15 rounded-4xl">
-          <BookingForm onSubmit={async () => await getMySessions()} />
+          <BookingForm onSubmit={async () => await getUserSessions()} />
         </div>
 
       </div>
