@@ -65,7 +65,7 @@ export const bookingClient = () => {
         },
         checkIn: async (entityId: string): Promise<void> => {
             if (!entityId) return
-            await client.get(`?entityId=${entityId}`)
+            await client.get(`/check?entityId=${entityId}`)
         }
     }
 }
