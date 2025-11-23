@@ -1,5 +1,4 @@
 import morgan from 'morgan';
-import helmet from 'helmet';
 import express, { Request, Response, NextFunction } from 'express';
 import logger from 'jet-logger';
 import BaseRouter from '@src/routes';
