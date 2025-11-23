@@ -4,7 +4,6 @@ import { RouteError } from '@src/common/util/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import ENV from '@src/common/constants/ENV';
 
 export class AuthService implements IAuthService {
     constructor(private readonly authRepository: IAuthRepository) { }
@@ -32,7 +31,7 @@ export class AuthService implements IAuthService {
                 email: user.email,
                 role: user.role.name,
             },
-            ENV.jwtSecret,
+            "Tefis",
             { expiresIn: '1d' }
         );
 

@@ -4,7 +4,6 @@ This project was created with [express-generator-typescript](https://github.com/
 
 **IMPORTANT** for demo purposes I had to disable `helmet` in production. In any real world app you should change these 3 lines of code in `src/server.ts`:
 ```ts
-// eslint-disable-next-line n/no-process-env
 if (!process.env.DISABLE_HELMET) {
   app.use(helmet());
 }
@@ -38,11 +37,6 @@ Run all unit-tests.
 ### `npm test -- "name of test file" (i.e. users).`
 
 Run a single unit-test.
-
-
-### `npm run lint`
-
-Check for linting errors.
 
 
 ### `npm run build`

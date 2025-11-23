@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 
 /**
  * Hypertext Transfer Protocol (HTTP) response status codes.

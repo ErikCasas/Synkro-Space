@@ -1,19 +1,17 @@
 import logger from 'jet-logger';
-import ENV from '@src/common/constants/ENV';
 import server from './server';
 import { seedEntities, seedRoles, seedUsers } from '@common/seed';
 
 
 const SERVER_START_MSG = (
-  'Express server started on port: ' + ENV.Port.toString()
+  'Express server started on port: ' + 3000
 );
 
 (async function bootstrap() {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   await seedRoles();
   await seedUsers();
   await seedEntities();
-  server.listen(ENV.Port, err => {
+  server.listen(3000, err => {
     if (!!err) {
       logger.err(err.message);
     } else {

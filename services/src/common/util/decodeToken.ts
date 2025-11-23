@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import ENV from '../constants/ENV';
 
 export interface DecodedToken {
     id: string;
@@ -9,7 +8,7 @@ export interface DecodedToken {
 
 export const decodeToken = (token: string): DecodedToken | null => {
     try {
-        const decoded = jwt.verify(token, ENV.jwtSecret) as DecodedToken;
+        const decoded = jwt.verify(token, "Tefis") as DecodedToken;
         return decoded;
     } catch (error) {
         return null;
